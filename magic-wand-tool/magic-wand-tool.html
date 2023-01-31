@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .wrapper {
+        top: 80px;
+        width: 400px;
+        height: 350px;
+        overflow: auto;
+      }
+      .content {
+        position: relative;
+      }
+      .canvas {
+        position: absolute;
+      }
+      .canvas:hover {
+        cursor: default;
+      }
+      .picture {
+        position: absolute;
+      }
+      .button {
+        padding: 4px;
+        margin: 4px;
+        border: 1px solid black;
+        float: left;
+      }
+      .button:hover {
+        background-color: blue;
+        color: white;
+        cursor: pointer;
+      }
+      #threshold {
+        width: 95px;
+        float: left;
+      }
+      #file-upload {
+        display: none;
+      }
+      .add-mode {
+        cursor: copy !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="overflow: auto">
+      <div class="button" onclick="uploadClick()">Upload image and click on it</div>
+      <div class="button" onclick="trace()">Create polygons by current selection</div>
+      <div class="button" onclick="paint('FF0000', 0.35)">Paint the selection</div>
+      <input id="file-upload" type="file" accept="image/*" onchange="imgChange(this)" />
+    </div>
+    <div style="overflow: auto">
+      <div style="float: left; margin-right: 10px">Blur radius:</div>
+      <input
+        id="blurRadius"
+        type="text"
+        onchange="onRadiusChange.apply(this, arguments)"
+        style="float: left; width: 20px; margin-right: 10px"
+      />
+      <div id="threshold"></div>
+    </div>
+    <div>(hold left mouse button and move to change the color threshold)</div>
+    <div>(hold the CTRL key to add selection)</div>
+    <div class="wrapper">
+      <div class="content">
+        <img id="test-picture" class="picture" />
+        <canvas
+          class="canvas"
+          id="resultCanvas"
+          onmouseup="onMouseUp.apply(this, arguments)"
+          onmousedown="onMouseDown.apply(this, arguments)"
+          onmousemove="onMouseMove.apply(this, arguments)"
+        ></canvas>
+      </div>
+    </div>
+    <script src="./index.js"></script>
+  </body>
+</html>

@@ -1,55 +1,78 @@
-import java.util.List;
-import java.util.ArrayList;
+// Java implementation of QuickSort
+import java.io.*;
 
-class Solution {
-  static List<String> res = new ArrayList<>();
+class QuickSort{
+    
+// A utility function to swap two elements
+static void swap(int[] arr, int i, int j)
+{
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
 
-  public static List<String> letterCasePermutation(String s) {
-    char[] cs = s.toCharArray();
-    dfs(cs, 0);
-    return res;
-  }
+/* This function takes last element as pivot, places
+the pivot element at its correct position in sorted
+array, and places all smaller (smaller than pivot)
+to left of pivot and all greater elements to right
+of pivot */
+static int partition(int[] arr, int low, int high)
+{
+    
+    // pivot
+    int pivot = arr[high];
+    
+    // Index of smaller element and
+    // indicates the right position
+    // of pivot found so far
+    int i = (low - 1);
 
-  /**
-   * @param cs  搜索的字符数组
-   * @param idx 开始搜索的位置
-   */
-  static void dfs(char[] cs, int idx) {
-    res.add(String.valueOf(cs));
-    for (int i = idx; i < cs.length; i++) {
-      // 数字, 则跳过
-      if (isDigit(cs[i]))
-        continue;
-      // 大小写反转
-      cs[i] = changeLetter(cs[i]);
-      // 搜索
-      dfs(cs, i + 1);
-      // 回溯, 大小写反转回来
-      cs[i] = changeLetter(cs[i]);
+    for(int j = low; j <= high - 1; j++)
+    {
+        
+        // If current element is smaller
+        // than the pivot
+        if (arr[j] < pivot)
+        {
+            
+            // Increment index of
+            // smaller element
+            i++;
+            swap(arr, i, j);
+        }
     }
-  }
-
-  /**
-   * 反转大小写
-   * 'A' --> 'a'
-   * 'a' --> 'A'
-   */
-  public static char changeLetter(char c) {
-    return (c >= 'a' && c <= 'z') ? (char) (c - 32) : (char) (c + 32);
-  }
-
-  /**
-   * 判断是否是数字 (此题中的字符, 非字母即数字)
-   */
-  public static boolean isDigit(char c) {
-    return c >= '0' && c <= '9';
-  }
+    swap(arr, i + 1, high);
+    return (i + 1);
 }
 
-public class test {
-  public static void main(String[] args) {
-    String s = "a1b2";
-    List<String> res = Solution.letterCasePermutation(s);
-    System.out.println(res);
-  }
+/* The main function that implements QuickSort
+        arr[] --> Array to be sorted,
+        low --> Starting index,
+        high --> Ending index
+*/
+static void quickSort(int[] arr, int low, int high)
+{
+    if (low < high)
+    {
+        
+        // pi is partitioning index, arr[p]
+        // is now at right place
+        int pi = partition(arr, low, high);
+
+        // Separately sort elements before
+        // partition and after partition
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
 }
+
+public static void main(String[] args)
+{
+    int[] arr = { 10, 7, 8, 9, 1, 5 };
+    int n = arr.length;
+    
+    quickSort(arr, 0, n - 1);
+}
+}
+
+// This code is contributed by Ayush Choudhary
